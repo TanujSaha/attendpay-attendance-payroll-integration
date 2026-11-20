@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { LayoutDashboard, Users, CalendarCheck, WalletCards, Cable, ScrollText, BarChart3, Settings, Bell, ChevronDown, Search, Plus, MoreHorizontal, ArrowUpRight, TrendingUp, Upload, Download, RefreshCw, X, CheckCircle2, AlertTriangle, Building2, Clock3 } from 'lucide-react'
+import { LayoutDashboard, Users, CalendarCheck, WalletCards, Cable, ScrollText, BarChart3, Settings, Bell, ChevronDown, Search, Plus, MoreHorizontal, ArrowUpRight, TrendingUp, Upload, Download, RefreshCw, X, CheckCircle2, AlertTriangle, Building2, Clock3, Menu } from 'lucide-react'
 import { LineChart, Line, BarChart, Bar, PieChart, Pie, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts'
 import { api } from './services/api'
 import './App.css'
@@ -23,6 +23,7 @@ function App() {
   const [loading,setLoading]=useState(false)
   const [employeeToEdit,setEmployeeToEdit]=useState(null)
   const [importSummary,setImportSummary]=useState(null)
+  const [sidebarOpen,setSidebarOpen]=useState(false)
 
   const notify=(message)=>{setToast(message);setTimeout(()=>setToast(''),2600)}
   const load=async()=>{
@@ -55,25 +56,28 @@ function App() {
 
   return <div className="min-h-screen bg-[#f5f7fb] text-slate-800">
     {toast&&<div className="fixed right-6 top-5 z-50 flex items-center gap-2 rounded-xl bg-slate-950 px-4 py-3 text-sm text-white shadow-xl"><CheckCircle2 size={17}/>{toast}</div>}
-    <aside className="fixed left-0 top-0 z-30 flex h-screen w-[248px] flex-col border-r border-slate-200 bg-white">
+    {sidebarOpen&&<button aria-label="Close navigation" onClick={()=>setSidebarOpen(false)} className="fixed inset-0 z-30 bg-slate-950/30 lg:hidden"/>}
+    <aside className={`fixed left-0 top-0 z-40 flex h-screen w-[248px] flex-col border-r border-slate-200 bg-white transition-transform duration-200 ${sidebarOpen?'translate-x-0':'-translate-x-full lg:translate-x-0'}`}>
       <div className="flex h-[76px] items-center px-7"><div className="mr-3 flex h-9 w-9 items-center justify-center rounded-xl bg-indigo-600 text-white"><Building2 size={20}/></div><div><div className="text-[17px] font-bold tracking-tight text-slate-900">AttendPay</div><div className="text-[10px] font-semibold uppercase tracking-[.18em] text-slate-400">Payroll Suite</div></div></div>
       <nav className="flex-1 space-y-1 px-3 py-5">
-        {navItems.map(([label,Icon])=>{const active=page===label;return <button key={label} onClick={()=>setPage(label)} className={`group flex w-full items-center gap-3 rounded-lg px-4 py-3 text-[13px] font-semibold transition ${active?'bg-indigo-50 text-indigo-700':'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}><Icon size={18} strokeWidth={active?2.4:1.8}/>{label}{label==='Integration Logs'&&logs.length>0&&<span className="ml-auto rounded-full bg-indigo-100 px-2 py-0.5 text-[10px]">{logs.length}</span>}</button>})}
+        {navItems.map(([label,Icon])=>{const active=page===label;return <button key={label} onClick={()=>{setPage(label);setSidebarOpen(false)}}
+          className={`group flex w-full items-center gap-3 rounded-lg px-4 py-3 text-[13px] font-semibold transition ${active?'bg-indigo-50 text-indigo-700':'text-slate-500 hover:bg-slate-50 hover:text-slate-900'}`}><Icon size={18} strokeWidth={active?2.4:1.8}/>{label}{label==='Integration Logs'&&logs.length>0&&<span className="ml-auto rounded-full bg-indigo-100 px-2 py-0.5 text-[10px]">{logs.length}</span>}</button>})}
       </nav>
       <div className="m-4 rounded-xl border border-slate-200 bg-slate-50 p-4"><div className="mb-2 flex items-center gap-2 text-xs font-bold text-slate-700"><span className="h-2 w-2 rounded-full bg-emerald-500"></span>System operational</div><div className="text-[11px] text-slate-400">FastAPI · SQLite</div></div>
     </aside>
 
-    <main className="ml-[248px] min-h-screen">
-      <header className="sticky top-0 z-20 flex h-[76px] items-center border-b border-slate-200 bg-white/95 px-8 backdrop-blur">
+    <main className="min-h-screen lg:ml-[248px]">
+      <header className="sticky top-0 z-20 flex h-[76px] items-center border-b border-slate-200 bg-white/95 px-4 backdrop-blur md:px-8">
+        <button aria-label="Open navigation" onClick={()=>setSidebarOpen(true)} className="mr-3 flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200 lg:hidden"><Menu size={18}/></button>
         <div className="min-w-0"><div className="text-[11px] font-semibold text-slate-400">Workspace / {page}</div><h1 className="mt-0.5 text-xl font-bold text-slate-900">{page}</h1></div>
         <div className="ml-auto flex items-center gap-3">
-          <button className="flex h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600"><CalendarCheck size={16}/>November 2026<ChevronDown size={14}/></button>
-          <button className="relative flex h-10 w-10 items-center justify-center rounded-lg border border-slate-200"><Bell size={18}/><span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-red-500"></span></button>
-          <button className="flex h-10 items-center gap-2 border-l border-slate-200 pl-4"><div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white">AD</div><div className="text-left"><div className="text-xs font-bold">Admin</div><div className="text-[10px] text-slate-400">Administrator</div></div><ChevronDown size={14}/></button>
+          <button className="hidden h-10 items-center gap-2 rounded-lg border border-slate-200 bg-white px-3 text-xs font-semibold text-slate-600 md:flex"><CalendarCheck size={16}/>November 2026<ChevronDown size={14}/></button>
+          <button className="hidden h-10 w-10 items-center justify-center rounded-lg border border-slate-200 sm:flex relative"><Bell size={18}/><span className="absolute right-2 top-2 h-1.5 w-1.5 rounded-full bg-red-500"></span></button>
+          <button className="hidden h-10 items-center gap-2 border-l border-slate-200 pl-4 md:flex"><div className="flex h-8 w-8 items-center justify-center rounded-full bg-indigo-600 text-xs font-bold text-white">AD</div><div className="text-left"><div className="text-xs font-bold">Admin</div><div className="text-[10px] text-slate-400">Administrator</div></div><ChevronDown size={14}/></button>
         </div>
       </header>
 
-      <div className="p-8">
+      <div className="p-4 md:p-6 lg:p-8">
         {page==='Overview'&&<Overview stats={stats} attendanceChart={attendanceChart} payrollPie={payrollPie} payroll={payroll} logs={logs} attendance={attendance} setPage={setPage} setModal={setModal}/>} 
         {page==='Employees'&&<Employees employees={employees.filter(e=>e.full_name.toLowerCase().includes(search.toLowerCase())||e.employee_id.toLowerCase().includes(search.toLowerCase()))} search={search} setSearch={setSearch} setModal={setModal} setEmployeeToEdit={setEmployeeToEdit} deleteEmployee={deleteEmployee} load={load} notify={notify}/>} 
         {page==='Attendance'&&<Attendance attendance={attendance} importCSV={importCSV} exportData={exportData} importSummary={importSummary}/>} 

@@ -1,3 +1,26 @@
 #root { width: 100%; max-width: none; margin: 0; border: 0; min-height: 100vh; text-align: left; }
 body { min-width: 320px; background: #f5f7fb; }
 button, input, select { font-family: inherit; }
+
+@media (max-width: 1023px) {
+  main { margin-left: 0 !important; }
+  .grid-cols-12 > .col-span-8,
+  .grid-cols-12 > .col-span-7,
+  .grid-cols-12 > .col-span-5,
+  .grid-cols-12 > .col-span-4 {
+    grid-column: span 12 / span 12;
+  }
+}
+
+@media (max-width: 767px) {
+  .grid-cols-2 { grid-template-columns: minmax(0, 1fr); }
+  .fixed.bottom-5 { left: 16px !important; }
+  header h1 { font-size: 17px; }
+  table { min-width: 760px; }
+  .overflow-x-auto { -webkit-overflow-scrolling: touch; }
+}
+
+@media (max-width: 639px) {
+  .md\:grid-cols-2 { grid-template-columns: repeat(1, minmax(0, 1fr)); }
+  .min-h-screen { overflow-x: hidden; }
+}
