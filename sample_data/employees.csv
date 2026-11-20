@@ -1,0 +1,2 @@
+employee_id,full_name,email,department,designation,joining_date,basic_salary,bank_last_four,status
+EMP013,Meera Iyer,meera.iyer@attendpay.demo,Operations,HR Analyst,2026-11-21,39000,1234,Active

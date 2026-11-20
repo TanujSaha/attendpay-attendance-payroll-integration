@@ -1,0 +1,6 @@
+employee_id,date,check_in,check_out,status
+EMP001,2026-11-21,09:05,18:10,Present
+EMP002,2026-11-21,09:12,18:05,Present
+EMP003,2026-11-21,,,Absent
+EMP004,2026-11-21,,,Leave
+EMP999,2026-11-21,09:00,17:30,Present
