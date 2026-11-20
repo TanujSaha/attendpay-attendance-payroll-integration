@@ -2,8 +2,7 @@
 
 AttendPay is a modern attendance-to-payroll management application for small and medium businesses. It demonstrates how employee data, attendance records and payroll processing can be connected into one practical workflow.
 
-**Live application:** https://attendpay-attendance-payroll-integration-p2s8f7240.vercel.app/
-
+**Live application:** https://attendpay-attendance-payroll-integr.vercel.app/
 ## What it demonstrates
 
 - Employee management with add, edit, delete, search and department filtering
